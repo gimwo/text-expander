@@ -38,31 +38,31 @@ export default function App() {
 function TextExpander({
   children,
   collapsedNumWords = 10,
-  expandButtonText,
-  collapseButtonText,
-  buttonColor,
-  expanded,
+  expandButtonText = "Show more",
+  collapseButtonText = "Show Less",
+  buttonColor = "#1f09cd",
+  expanded = false,
   className = "",
 }) {
-  const [boxState, setBoxState] = useState(expanded || false);
+  const [boxState, setBoxState] = useState(expanded);
 
   const buttonStyle = {
+    font: "inherit",
     color: buttonColor,
+    background: "none",
+    border: "none",
+    marginLeft: "6px",
+    cursor: "pointer",
   };
+
   return (
     <div className={className}>
       {boxState
-        ? `${children} `
-        : `${children.split(" ").slice(0, collapsedNumWords).join(" ")}... `}
-      {!boxState ? (
-        <a href="#show" onClick={() => setBoxState(true)} style={buttonStyle}>
-          {expandButtonText || "Show more"}
-        </a>
-      ) : (
-        <a href="#hide" onClick={() => setBoxState(false)} style={buttonStyle}>
-          {collapseButtonText || "Show Less"}
-        </a>
-      )}
+        ? `${children}`
+        : `${children.split(" ").slice(0, collapsedNumWords).join(" ")}...`}
+      <button onClick={() => setBoxState((exp) => !exp)} style={buttonStyle}>
+        {boxState ? collapseButtonText : expandButtonText}
+      </button>
     </div>
   );
 }
